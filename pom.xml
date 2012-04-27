@@ -8,7 +8,7 @@
     <version>7</version>
   </parent>
 
-  <groupId>net.balusc.webapp</groupId>
+  <groupId>com.meltmedia.balucs</groupId>
   <artifactId>simple-file-servlet</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>jar</packaging>

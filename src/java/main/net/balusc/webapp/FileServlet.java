@@ -55,6 +55,18 @@ public class FileServlet
   // Properties ---------------------------------------------------------------------------------
 
   private String basePath;
+  
+  protected void setBasePath( String basePath ) 
+    throws ServletException
+  {
+	validateBasePath(basePath);
+	this.basePath = basePath;
+  }
+  
+  protected String getBasePath( )
+  {
+	  return this.basePath;
+  }
 
   // Actions ------------------------------------------------------------------------------------
 
@@ -69,35 +81,40 @@ public class FileServlet
     // Get base path (path to get all resources from) as init parameter.
     this.basePath = getServletContext().getRealPath(
       getInitParameter("basePath"));
-
-    // Validate base path.
-    if (this.basePath == null)
-    {
-      throw new ServletException(
-        "FileServlet init param 'basePath' is required.");
-    }
-    else
-    {
-      File path = new File(this.basePath);
-      if (!path.exists())
-      {
-        throw new ServletException(
-          "FileServlet init param 'basePath' value '" + this.basePath
-            + "' does actually not exist in file system.");
-      }
-      else if (!path.isDirectory())
-      {
-        throw new ServletException(
-          "FileServlet init param 'basePath' value '" + this.basePath
-            + "' is actually not a directory in file system.");
-      }
-      else if (!path.canRead())
-      {
-        throw new ServletException(
-          "FileServlet init param 'basePath' value '" + this.basePath
-            + "' is actually not readable in file system.");
-      }
-    }
+    
+    validateBasePath(basePath);
+  }
+  
+  public static void validateBasePath( String basePath ) throws ServletException
+  {
+	    // Validate base path.
+	    if (basePath == null)
+	    {
+	      throw new ServletException(
+	        "FileServlet init param 'basePath' is required.");
+	    }
+	    else
+	    {
+	      File path = new File(basePath);
+	      if (!path.exists())
+	      {
+	        throw new ServletException(
+	          "FileServlet init param 'basePath' value '" + basePath
+	            + "' does actually not exist in file system.");
+	      }
+	      else if (!path.isDirectory())
+	      {
+	        throw new ServletException(
+	          "FileServlet init param 'basePath' value '" + basePath
+	            + "' is actually not a directory in file system.");
+	      }
+	      else if (!path.canRead())
+	      {
+	        throw new ServletException(
+	          "FileServlet init param 'basePath' value '" + basePath
+	            + "' is actually not readable in file system.");
+	      }
+	    }	  
   }
 
   /**
