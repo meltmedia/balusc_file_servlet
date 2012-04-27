@@ -1,3 +1,6 @@
 build.ant/*
 build.eclipse/*
 target/*
+.classpath
+.project
+.settings/*
