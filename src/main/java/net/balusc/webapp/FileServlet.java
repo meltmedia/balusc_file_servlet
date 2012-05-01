@@ -79,8 +79,8 @@ public class FileServlet
   {
 
     // Get base path (path to get all resources from) as init parameter.
-    this.basePath = getServletContext().getRealPath(
-      getInitParameter("basePath"));
+    this.basePath =
+      getInitParameter("basePath");
     
     validateBasePath(basePath);
   }
