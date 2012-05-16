@@ -182,8 +182,19 @@ public class FileServlet
       return;
     }
 
-    // Prepare some variables. The ETag is an unique identifier of the file.
     String fileName = file.getName();
+
+    //Check if file is directory
+    if (file.isDirectory())
+    {
+      // Check to see if there is an index.html file in the directory
+      if (new File(file, "index.html").exists())
+      {
+        file = new File(file, "index.html");
+      }
+    }
+
+    // Prepare some variables. The ETag is an unique identifier of the file.
     long length = file.length();
     long lastModified = file.lastModified();
     String eTag = fileName + "_" + length + "_" + lastModified;
@@ -305,7 +316,7 @@ public class FileServlet
     // Prepare and initialize response --------------------------------------------------------
 
     // Get content type by file name and set default GZIP support and content disposition.
-    String contentType = getServletContext().getMimeType(fileName);
+    String contentType = getServletContext().getMimeType(file.getName());
     boolean acceptsGzip = false;
     String disposition = "inline";
 
@@ -339,7 +350,7 @@ public class FileServlet
     response.reset();
     response.setBufferSize(DEFAULT_BUFFER_SIZE);
     response.setHeader("Content-Disposition", disposition + ";filename=\""
-      + fileName + "\"");
+      + file.getName() + "\"");
     response.setHeader("Accept-Ranges", "bytes");
     response.setHeader("ETag", eTag);
     response.setDateHeader("Last-Modified", lastModified);
