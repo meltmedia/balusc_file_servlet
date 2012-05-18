@@ -84,6 +84,10 @@ public class FileServlet
     
     validateBasePath(basePath);
   }
+
+  protected String resolveMimeType(String filename) {
+    return getServletContext().getMimeType(filename);
+  }
   
   public static void validateBasePath( String basePath ) throws ServletException
   {
@@ -316,7 +320,7 @@ public class FileServlet
     // Prepare and initialize response --------------------------------------------------------
 
     // Get content type by file name and set default GZIP support and content disposition.
-    String contentType = getServletContext().getMimeType(file.getName());
+    String contentType = resolveMimeType(file.getName());
     boolean acceptsGzip = false;
     String disposition = "inline";
 
