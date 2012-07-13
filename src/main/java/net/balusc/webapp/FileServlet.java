@@ -194,8 +194,12 @@ public class FileServlet
     String fileName = file.getName();
     
     if( file.isFile() && fileName.equals("index.html")) {
+      String location = request.getPathInfo().replaceFirst("/index.html\\Z", "");
+      if( location.isEmpty() ) location = "/";
+      if( request.getQueryString() != null ) location = location + "?" + request.getQueryString();
       response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
       response.setContentType(resolveMimeType(fileName));
+      response.setHeader("Location", location);
       response.getOutputStream().close();
       return;
     }
