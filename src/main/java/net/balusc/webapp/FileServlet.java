@@ -55,12 +55,17 @@ public class FileServlet
   // Properties ---------------------------------------------------------------------------------
 
   private String basePath;
+  private long lastModified = System.currentTimeMillis();
   
   protected void setBasePath( String basePath ) 
     throws ServletException
   {
 	validateBasePath(basePath);
 	this.basePath = basePath;
+  }
+  
+  protected void setLastModified(long lastModified) {
+    this.lastModified = lastModified;
   }
   
   protected String getBasePath( )
@@ -187,6 +192,14 @@ public class FileServlet
     }
 
     String fileName = file.getName();
+    
+    if( file.isFile() && fileName.equals("index.html")) {
+      response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
+      response.setContentType(resolveMimeType(fileName));
+      response.getOutputStream().close();
+      return;
+    }
+      
 
     //Check if file is directory
     if (file.isDirectory())
@@ -200,7 +213,6 @@ public class FileServlet
 
     // Prepare some variables. The ETag is an unique identifier of the file.
     long length = file.length();
-    long lastModified = file.lastModified();
     String eTag = fileName + "_" + length + "_" + lastModified;
 
     // Validate request headers for caching ---------------------------------------------------
