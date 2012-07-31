@@ -374,8 +374,9 @@ public class FileServlet
     response.setHeader("Accept-Ranges", "bytes");
     response.setHeader("ETag", eTag);
     response.setDateHeader("Last-Modified", lastModified);
-    response.setDateHeader("Expires", System.currentTimeMillis()
-      + DEFAULT_EXPIRE_TIME);
+    // Removing Expires setting to prevent pages loading from cache
+    //response.setDateHeader("Expires", System.currentTimeMillis()
+    //  + DEFAULT_EXPIRE_TIME);
 
     // Send requested file (part(s)) to client ------------------------------------------------
 
